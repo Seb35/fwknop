@@ -2087,7 +2087,7 @@ compare_addr_list_ipv4(acc_int_list_t *ip_list, uint32_t ip)
     {
         if(ip_list->family == AF_UNSPEC)
             return 1;
-        if(ip_list->family != AF_INET6)
+        if(ip_list->family != AF_INET)
             continue;
         if((ip & ip_list->acc_int.inet.mask) == (ip_list->acc_int.inet.maddr & ip_list->acc_int.inet.mask))
             return 1;

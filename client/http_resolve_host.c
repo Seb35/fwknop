@@ -56,16 +56,16 @@ struct url
 };
 
 static int resolve_ip(const char * resp, fko_cli_options_t *options, const char * extraerror1,char *extraerror2) {
-  struct  addrinfo *result=NULL;
-  struct  addrinfo *rp;
-  struct  addrinfo hints;
-  int error;
+    struct  addrinfo *result=NULL;
+    struct  addrinfo *rp;
+    struct  addrinfo hints;
+    int error;
 
-  memset(&hints, 0, sizeof(struct addrinfo));
-  hints.ai_family = AF_UNSPEC;
-  hints.ai_flags  = AI_NUMERICHOST | AI_CANONNAME;
-  error = getaddrinfo(resp, NULL, &hints, &result);
-  if (error != 0)
+    memset(&hints, 0, sizeof(struct addrinfo));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_flags  = AI_NUMERICHOST | AI_CANONNAME;
+    error = getaddrinfo(resp, NULL, &hints, &result);
+    if (error != 0)
     {
         log_msg(LOG_VERBOSITY_ERROR,
 		"[-] Could not resolve IP via: '%s%s'", extraerror1, extraerror2);

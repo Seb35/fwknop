@@ -496,13 +496,13 @@ jump_rule_exists_chk_support(const fko_srv_options_t * const opts, const int cha
 
 static int
 jump_rule_exists_no_chk_support(const fko_srv_options_t * const opts,
-        const int chain_num)
+        const int chain_num, int ipv6)
 {
     int     exists = 0;
     char    chain_search[CMD_BUFSIZE] = {0};
 
     snprintf(cmd_buf, CMD_BUFSIZE-1, "%s " IPT_LIST_RULES_ARGS,
-        fwc.fw_command,
+        ipv6 ? fwc.fw_command6 : fwc.fw_command,
         fwc.chain[chain_num].table,
         fwc.chain[chain_num].from_chain
     );
@@ -532,7 +532,7 @@ jump_rule_exists(const fko_srv_options_t * const opts, const int chain_num, int 
     if(have_ipt_chk_support == 1)
         exists = jump_rule_exists_chk_support(opts, chain_num, ipv6);
     else
-        exists = jump_rule_exists_no_chk_support(opts, chain_num);
+        exists = jump_rule_exists_no_chk_support(opts, chain_num, ipv6);
 
     return exists;
 }
@@ -1583,8 +1583,11 @@ process_spa_request(const fko_srv_options_t * const opts,
     time_t          now;
     unsigned int    exp_ts;
 
-    /* XXX set adequately per SPA message */
-    int             ipv6 = (opts->family == AF_INET6) ? 1 : 0;
+    int ipv6 = 0;
+    if(is_valid_ip_addr(spadat->use_src_ip, strlen(spadat->use_src_ip), AF_INET6))
+    {
+        ipv6 = 1;
+    }
 
     /* Parse and expand our access message.
     */

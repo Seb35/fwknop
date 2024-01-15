@@ -199,6 +199,9 @@ is_valid_hostname(const char * const hostname_str, const int len)
     if (*ndx == '-')
         return 0;
 
+    if (*ndx == '.')
+        label_size--;
+
     if (label_size > 63)
         return 0;
 
